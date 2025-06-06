@@ -1,7 +1,8 @@
 from spire.doc import *
 from spire.doc.common import *
 import os
-
+# import markdown2
+# import pdfkit
 
 # Defina os caminhos de entrada e saída
 input_md = "relatorio_final.md"
@@ -29,3 +30,14 @@ except Exception as e:
 finally:
     # Libera os recursos
     document.Dispose()
+
+
+# def convert_md_to_pdf(md_file, pdf_file):
+#     with open(md_file, 'r', encoding='utf-8') as f:
+#         markdown_text = f.read()
+
+#     html_text = markdown2.markdown(markdown_text)
+#     pdfkit.from_string(html_text, pdf_file)
+
+# if __name__ == '__main__':
+#     convert_md_to_pdf(input_md, output_pdf)

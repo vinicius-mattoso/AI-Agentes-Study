@@ -32,15 +32,3 @@ if __name__ == "__main__":
         f.write("--- RELATÓRIO FINAL ---")
         f.write(str(resultado))
     print("--- RELATÓRIO FINAL SALVO EM 'relatorio_final.md' ---")
-    # Converter .md para .pdf
-    try:
-        import markdown
-        import pdfkit
-
-        with open("relatorio_final.md", "r", encoding="utf-8") as md_file:
-            html_content = markdown.markdown(md_file.read())
-
-        pdfkit.from_string(html_content, "relatorio_final.pdf")
-        print("--- PDF gerado com sucesso: 'relatorio_final.pdf' ---")
-    except Exception as e:
-        print("Erro ao gerar PDF:", e)
