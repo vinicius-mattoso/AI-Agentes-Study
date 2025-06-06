@@ -1,57 +1,106 @@
 from crewai import Task
 from agents.level_3_editores import editor_intro, editor_metodo, editor_conclusao
 from tasks.pesquisa_tasks import pesquisa_task
+from contexto.context_loader import carregar_contexto
+from textwrap import dedent
 
-# INTRODUÇÃO — breve e contextual
+ctx = carregar_contexto()
+projeto = ctx['projeto']
+intro_cfg = ctx['agentes']['editor_intro']
+metodo_cfg = ctx['agentes']['editor_metodologia']
+conclusao_cfg = ctx['agentes']['editor_conclusao']
+
+# INTRODUÇÃO — contextualização estratégica
 intro_task = Task(
-    description="""
-        Com base nos dados da pesquisa, escreva a introdução do relatório.
+    description=dedent(f"""
+        Com base nas informações pesquisadas, elabore a introdução do relatório para o projeto da empresa {projeto['empresa']}, atuante no setor {projeto['setor']}.
 
-        Foque em contextualizar o problema da empresa, destacando o cenário atual, os desafios enfrentados
-        e a relevância do tema proposto para o setor em questão.
+        Objetivo do projeto: {projeto['objetivo']}
 
-        O texto deve ser claro, conciso e servir como porta de entrada para o leitor. Evite repetições e aprofundamentos
-        que serão abordados na seção de metodologia.
-    """,
-    expected_output="Texto introdutório claro e objetivo contextualizando o projeto.",
+        Contexto: {projeto['contexto']}
+
+        Diretrizes:
+        - Apresente o cenário atual enfrentado pela empresa e os desafios específicos do setor.
+        - Contextualize o problema de forma clara e acessível ao leitor corporativo.
+        - Evite aprofundar aspectos técnicos — isso será tratado na seção de metodologia.
+        - Mantenha tom {intro_cfg['tom']}.
+        - Evitar repetições {intro_cfg['evitar_repeticao']}
+
+        Essa introdução deve preparar o leitor para entender a motivação por trás do projeto e a relevância do tema abordado no restante do relatório.
+    """),
+    expected_output="Texto introdutório claro e objetivo, contextualizando o problema da empresa.",
     agent=editor_intro,
     context=[pesquisa_task]
 )
 
-# METODOLOGIA — a seção mais importante
+# METODOLOGIA — núcleo estratégico do relatório
 metodo_task = Task(
-    description="""
-        Redija a seção de metodologia do relatório com o máximo de profundidade e detalhamento possível.
+    description=dedent(f"""
+        Elabore a seção de metodologia do relatório para o projeto da empresa {projeto['empresa']} ({projeto['setor']}), com objetivo de {projeto['objetivo']} em até {projeto['prazo_meses']} meses.
 
-        Instruções:
-        - Descreva as etapas do projeto para solucionar o problema apresentado.
-        - Apresente os perfis dos profissionais que atuarão (ex: cientista de dados, analista de negócios, engenheiro de machine learning).
-        - Liste as ferramentas ou tecnologias previstas (ex: Power BI, Serviços de cloud como os da AWS, utilização de modelos LLM como o GPTs, etc).
-        - Se possível, represente o fluxo de etapas em formato descritivo ou em forma de tabela/fluxograma textual.
-        - Destaque interdependências entre fases e a lógica por trás da ordem proposta.
+        Essa seção é o núcleo central do relatório e deve conter:
 
-        O conteúdo dessa seção deve compor a maior parte do relatório final, com cerca de 4 a 6 páginas (estimadas).
-        Seja técnico, organizado e direto.
-    """,
-    expected_output="Texto detalhado sobre as etapas do projeto, perfis envolvidos e ferramentas utilizadas, com estruturas como listas e tabelas.",
+        1. Etapas do projeto, ordenadas cronologicamente e com descrição funcional.
+        2. Perfis dos profissionais envolvidos (ex: analistas, cientistas de dados, engenheiros de ML, gerente de projeto).
+        3. Ferramentas e tecnologias a serem utilizadas (ex: Power BI, AWS, GPTs, APIs de atendimento).
+        4. Indicadores de sucesso (como será medido o progresso e o impacto).
+        5. Cronograma macro com estimativas por fase.
+        6. Riscos e estratégias de mitigação.
+
+        Formato sugerido: {metodo_cfg['formato_sugerido']}
+        Tom: {metodo_cfg['tom']}
+
+        Instruções adicionais:
+        - Seja direto, técnico e bem estruturado.
+        - Utilize listas, tabelas e subtítulos quando necessário.
+        - Evite redundância e valorize clareza.
+
+        Essa seção deve ocupar a maior parte do relatório final, com profundidade estratégica.
+    """),
+    expected_output="Seção robusta de metodologia com etapas, perfis, ferramentas e planejamento.",
     agent=editor_metodo,
     context=[pesquisa_task]
 )
 
-# CONCLUSÃO — encerramento e próximos passos
+pontos_fortes_trecho = ""
+if conclusao_cfg.get("incluir_pontos_fortes", False):
+    pontos_fortes_trecho = dedent("""
+        Além disso, destaque os pontos fortes do projeto:
+
+        - Alinhamento estratégico com objetivos da empresa;
+        - Clareza nas etapas e responsabilidade dos envolvidos;
+        - Escolha apropriada de tecnologias e ferramentas;
+        - Potencial de escalabilidade e impacto operacional.
+
+        Esses pontos devem ser apresentados como fortalezas que reforçam a viabilidade e o diferencial competitivo do projeto.
+    """)
+
+# CONCLUSÃO — fechamento estratégico e recomendações
 conclusao_task = Task(
-    description="""
-        Elabore a conclusão do relatório, retomando os principais pontos do projeto.
+    description=dedent(f"""
+        Com base nas seções anteriores (introdução e metodologia), redija a conclusão do relatório para o projeto da empresa {projeto['empresa']}.
 
-        Inclua:
-        - Um resumo dos desafios enfrentados pela empresa.
-        - A importância da metodologia escolhida.
-        - Recomendações para os próximos passos (ex: fases futuras, avaliação de resultados, escalabilidade).
-        - Tom de encerramento objetivo, mas com proposta de continuidade.
+        Reforce:
+        - Os principais desafios enfrentados no cenário atual.
+        - A aderência da metodologia proposta às necessidades da empresa.
+        - Como as ferramentas e estratégias abordadas podem gerar os resultados esperados.
 
-        Evite repetir frases da introdução. Esta seção deve refletir a maturidade do plano apresentado.
-    """,
-    expected_output="Texto conclusivo com encerramento estratégico e recomendações.",
+        Recomende:
+        - Ações complementares ou fases futuras do projeto.
+        - Possíveis indicadores de sucesso a serem acompanhados.
+        - Cuidados estratégicos durante a implementação.
+
+        Evite:
+        - Repetir frases da introdução ou metodologia.
+        - Linguagem genérica ou promessas não sustentadas.
+
+        Tom: {conclusao_cfg['tom']}
+
+        {pontos_fortes_trecho}
+
+        Essa seção deve encerrar o relatório com firmeza e visão de continuidade.
+    """),
+    expected_output="Texto conclusivo com visão estratégica e recomendações práticas para próximos passos.",
     agent=editor_conclusao,
     context=[intro_task, metodo_task]
 )

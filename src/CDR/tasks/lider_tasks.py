@@ -34,42 +34,91 @@
 #     agent=lider
 # )
 
+# from crewai import Task
+# from agents.level_1_lider import lider
+# from textwrap import dedent
+# from datetime import datetime
+
+# # Pega mês e ano atual
+# data_hoje = datetime.now()
+# mes_ano = data_hoje.strftime("%B de %Y")  # exemplo: "June de 2025"
+
+# conteudo = dedent("""
+#     Nome da Empresa: Itau
+#     Tema do Projeto: Automatização de processos com IA
+#     Objetivo: Reduzir tempo de resposta ao cliente em 40%
+#     Prazo: 12 meses
+#     Contexto: Empresa do setor de bancário, que deseja reduzir o tempo de resposta a um cliente quando o mesmo tentar entrar em contato com o banco.
+# """)
+
+# mission_task = Task(
+#     description=dedent(f"""
+#         Você é o agente líder de um time de análise de projetos para inovação tecnológica.
+
+#         A data atual é {mes_ano}. Use isso para estimar a data de conclusão do projeto com base no prazo fornecido.
+
+#         Com base nas informações abaixo, extraia e estruture os dados essenciais para um relatório de CDR (Critical Design Review).
+
+#         As informações são:
+
+#         {conteudo}
+
+#         Sua resposta deve conter os seguintes campos formatados:
+#         - Nome da Empresa
+#         - Tema do Projeto
+#         - Objetivo
+#         - Prazo (incluir mês e ano de término estimado)
+#         - Contexto
+#     """),
+#     expected_output="Um resumo estruturado da missão com os campos bem definidos e prazo estimado de término.",
+#     agent=lider
+# )
+
+
 from crewai import Task
 from agents.level_1_lider import lider
 from textwrap import dedent
 from datetime import datetime
+from contexto.context_loader import carregar_contexto
 
-# Pega mês e ano atual
+# Carrega o contexto central
+ctx = carregar_contexto()
+projeto = ctx['projeto']
+
+# Calcula mês e ano atuais
 data_hoje = datetime.now()
-mes_ano = data_hoje.strftime("%B de %Y")  # exemplo: "June de 2025"
+mes_ano_atual = data_hoje.strftime("%B de %Y")
 
-conteudo = dedent("""
-    Nome da Empresa: Itau
-    Tema do Projeto: Automatização de processos com IA
-    Objetivo: Reduzir tempo de resposta ao cliente em 40%
-    Prazo: 12 meses
-    Contexto: Empresa do setor de bancário, que deseja reduzir o tempo de resposta a um cliente quando o mesmo tentar entrar em contato com o banco.
-""")
+# Calcula mês/ano de término estimado
+prazo_meses = projeto['prazo_meses']
+ano_final = data_hoje.year + (data_hoje.month + prazo_meses - 1) // 12
+mes_final = (data_hoje.month + prazo_meses - 1) % 12 + 1
+data_final = datetime(ano_final, mes_final, 1)
+mes_ano_final = data_final.strftime("%B de %Y")
 
+# Gera task para o líder
 mission_task = Task(
     description=dedent(f"""
         Você é o agente líder de um time de análise de projetos para inovação tecnológica.
 
-        A data atual é {mes_ano}. Use isso para estimar a data de conclusão do projeto com base no prazo fornecido.
+        A data atual é {mes_ano_atual}. Estime corretamente o prazo final com base nos {prazo_meses} meses informados.
+        O projeto deverá ser concluído até {mes_ano_final}.
 
-        Com base nas informações abaixo, extraia e estruture os dados essenciais para um relatório de CDR (Critical Design Review).
+        Abaixo estão os dados do projeto que você deve organizar:
 
-        As informações são:
+        - Nome da Empresa: {projeto['empresa']}
+        - Tema do Projeto: {projeto['objetivo']}
+        - Setor: {projeto['setor']}
+        - Contexto: {projeto['contexto']}
+        - Prazo: {prazo_meses} meses
 
-        {conteudo}
-
-        Sua resposta deve conter os seguintes campos formatados:
+        Sua resposta deve conter os seguintes campos organizados:
         - Nome da Empresa
         - Tema do Projeto
         - Objetivo
         - Prazo (incluir mês e ano de término estimado)
         - Contexto
     """),
-    expected_output="Um resumo estruturado da missão com os campos bem definidos e prazo estimado de término.",
+    expected_output="Resumo estruturado da missão com campos bem definidos e data de término estimada.",
     agent=lider
 )
