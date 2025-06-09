@@ -99,7 +99,7 @@ mes_ano_final = data_final.strftime("%B de %Y")
 # Gera task para o líder
 mission_task = Task(
     description=dedent(f"""
-        Você é o agente líder de um time de análise de projetos para inovação tecnológica.
+        Você é o agente líder de um time de projetos para inovação tecnológica.
 
         A data atual é {mes_ano_atual}. Estime corretamente o prazo final com base nos {prazo_meses} meses informados.
         O projeto deverá ser concluído até {mes_ano_final}.
@@ -112,6 +112,10 @@ mission_task = Task(
         - Contexto: {projeto['contexto']}
         - Prazo: {prazo_meses} meses
 
+        Você deve instruir a equipe de pesquisa para conseguir a maior e melhor quantidade de ensumos para a confecção do projeto.
+        A equipe de pesquisa que ira fornecer o material necessário para a equipe de escritores para a confecção da proposta de solução.
+        Você precisa dar ordens claras e assertivas
+
         Sua resposta deve conter os seguintes campos organizados:
         - Nome da Empresa
         - Tema do Projeto
@@ -119,6 +123,6 @@ mission_task = Task(
         - Prazo (incluir mês e ano de término estimado)
         - Contexto
     """),
-    expected_output="Resumo estruturado da missão com campos bem definidos e data de término estimada.",
+    expected_output="Resumo estruturado do projeto com campos bem definidos, escopo claro e objetivo com data de término estimada.",
     agent=lider
 )

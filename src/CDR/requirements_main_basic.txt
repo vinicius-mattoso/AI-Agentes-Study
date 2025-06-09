@@ -1,3 +1,5 @@
 crewai
 openai
 python-dotenv
+crewai-tools
+PyYAML

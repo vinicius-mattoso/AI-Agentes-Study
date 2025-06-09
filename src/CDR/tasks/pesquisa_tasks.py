@@ -39,6 +39,10 @@ pesquisa_task = Task(
         - Problemas comuns enfrentados
         - Tecnologias e soluções utilizadas por concorrentes ou benchmarks
         - Informações úteis para ajudar os editores a redigir a metodologia e contextualização
+
+        Diretrizes adicionais:
+        - Evite repetir buscas em sites que falharam anteriormente
+        - Priorize fontes com histórico estável de resposta
     """),
     expected_output="Resumo com informações sobre setor, tecnologias utilizadas, concorrentes e práticas recomendadas.",
     agent=pesquisador,

@@ -41,7 +41,7 @@ metodo_task = Task(
         Essa seção é o núcleo central do relatório e deve conter:
 
         1. Etapas do projeto, ordenadas cronologicamente e com descrição funcional.
-        2. Perfis dos profissionais envolvidos (ex: analistas, cientistas de dados, engenheiros de ML, gerente de projeto).
+        2. Perfis dos profissionais envolvidos (ex: analistas, cientistas de dados, engenheiros de ML, gerente de projeto). Devemos ter uma tabela com a quantidade de cada profissional e as principais atribuições dos mesmos.
         3. Ferramentas e tecnologias a serem utilizadas (ex: Power BI, AWS, GPTs, APIs de atendimento).
         4. Indicadores de sucesso (como será medido o progresso e o impacto).
         5. Cronograma macro com estimativas por fase.

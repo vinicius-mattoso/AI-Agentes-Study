@@ -7,24 +7,9 @@ projeto:
   resultado_esperado: "Redução de 40% no tempo de resposta no atendimento ao cliente em até 12 meses, mantendo a qualidade do serviço."
 
 publico_alvo:
-  perfil: "Diretor de Operações"
+  perfil: "Diretor de Operações e Stakeholders de negócio"
   linguagem: "Executiva e técnica"
   foco: "Viabilidade, ROI e impacto operacional"
-
-audiencia_secundaria:
-  - "Equipe técnica de TI"
-  - "Stakeholders de negócio"
-
-formato_final:
-  tipo: "markdown"
-  estrutura:
-    - "Capa"
-    - "Sumário"
-    - "Introdução"
-    - "Metodologia"
-    - "Conclusão"
-
-idioma: "pt-BR"
 
 agentes:
   pesquisador:
@@ -45,3 +30,4 @@ agentes:
   editor_conclusao:
     incluir_pontos_fortes: true
     tom: "executivo"
+

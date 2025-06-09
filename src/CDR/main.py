@@ -11,6 +11,8 @@ from tasks.edicao_tasks import intro_task, metodo_task, conclusao_task
 from tasks.guardrail_tasks import revisar_task
 from tasks.formatador_tasks import pdf_task
 
+from datetime import datetime
+
 crew = Crew(
     agents=[
         lider, pesquisador,
@@ -28,7 +30,11 @@ crew = Crew(
 
 if __name__ == "__main__":
     resultado = crew.kickoff()
-    with open("relatorio_final.md", "w", encoding="utf-8") as f:
-        f.write("--- RELATÓRIO FINAL ---")
-        f.write(str(resultado))
-    print("--- RELATÓRIO FINAL SALVO EM 'relatorio_final.md' ---")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    md_path = f"relatorio_final_{timestamp}.md"
+
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write("--- RELATÓRIO FINAL ---\n\n")
+        f.write(str(pdf_task.output))
+
+    print(f"✅ Relatório salvo em: {md_path}")
