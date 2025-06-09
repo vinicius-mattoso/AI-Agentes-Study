@@ -1,0 +1,33 @@
+projeto:
+  empresa: "Banco Itau"
+  setor: "Bancário"
+  objetivo: "Reduzir tempo de resposta ao cliente em 40%"
+  prazo_meses: 12
+  contexto: "Empresa necessita reduzir o delay no tempo de resposta de um cliente quando o mesmo entra em contato com o banco."
+  resultado_esperado: "Redução de 40% no tempo de resposta no atendimento ao cliente em até 12 meses, mantendo a qualidade do serviço."
+
+publico_alvo:
+  perfil: "Diretor de Operações e Stakeholders de negócio"
+  linguagem: "Executiva e técnica"
+  foco: "Viabilidade, ROI e impacto operacional"
+
+agentes:
+  pesquisador:
+    pontos_focais:
+      - "Desafios atrelados setor"
+      - "Tecnologias de automação de atendimento"
+      - "Casos de uso de IA similares"
+    tipo_de_fonte: "artigos técnicos e notícias atualizadas"
+
+  editor_metodologia:
+    formato_sugerido: "texto, listas e tabelas"
+    tom: "técnico e instrucional"
+
+  editor_intro:
+    evitar_repeticao: true
+    tom: "claro e direto"
+
+  editor_conclusao:
+    incluir_pontos_fortes: true
+    tom: "executivo"
+
